@@ -5,6 +5,10 @@ const Index = () => {
   const [showMessage, setShowMessage] = useState(false);
 
   const handleButtonClick = () => {
+    if ('vibrate' in navigator) {
+      navigator.vibrate([100, 50, 100]);
+    }
+    
     setShowMessage(true);
     setTimeout(() => {
       setShowMessage(false);
