@@ -1,48 +1,10 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const [showMessage, setShowMessage] = useState(false);
-  const audioContextRef = useRef<AudioContext | null>(null);
-
-  const playSound = () => {
-    if (!audioContextRef.current) {
-      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-    }
-    
-    const ctx = audioContextRef.current;
-    const now = ctx.currentTime;
-
-    const oscillator1 = ctx.createOscillator();
-    const oscillator2 = ctx.createOscillator();
-    const gainNode = ctx.createGain();
-    const filter = ctx.createBiquadFilter();
-
-    oscillator1.connect(filter);
-    oscillator2.connect(filter);
-    filter.connect(gainNode);
-    gainNode.connect(ctx.destination);
-
-    oscillator1.frequency.setValueAtTime(100, now);
-    oscillator1.frequency.exponentialRampToValueAtTime(50, now + 0.5);
-    oscillator2.frequency.setValueAtTime(150, now);
-    oscillator2.frequency.exponentialRampToValueAtTime(75, now + 0.5);
-
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(800, now);
-    filter.frequency.exponentialRampToValueAtTime(200, now + 0.5);
-
-    gainNode.gain.setValueAtTime(0.3, now);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-
-    oscillator1.start(now);
-    oscillator2.start(now);
-    oscillator1.stop(now + 0.5);
-    oscillator2.stop(now + 0.5);
-  };
 
   const handleButtonClick = () => {
-    playSound();
     setShowMessage(true);
     setTimeout(() => {
       setShowMessage(false);
